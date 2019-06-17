@@ -17,7 +17,8 @@ namespace unp4k
 	{
 		static void Main(string[] args)
 		{
-			if (args.Length == 0) args = new[] { @"F:\Dropbox (Personal)\Games\StarCitizen\Game Extracts\3.5.1 LIVE.1835013\Data.p4k" };
+			if (args.Length == 0) args = new[] { @"Z:\3.5.1 LIVE.1835013\Data.p4k" };
+			string dataFileDirectory = args[0].Substring(0, args[0].IndexOf("Data.p4k", StringComparison.InvariantCultureIgnoreCase));
 
 			if (args.Length == 1) args = new[] { args[0], "*.*" };
 
@@ -39,11 +40,20 @@ namespace unp4k
 						//	(args[1].EndsWith("xml", StringComparison.InvariantCultureIgnoreCase) && entry.Name.EndsWith(".dcb", StringComparison.InvariantCultureIgnoreCase))) // Searching for XMLs - include game.dcb
 						if (entry.Name.EndsWith(".dcb", StringComparison.InvariantCultureIgnoreCase) ||
 							entry.Name.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase) ||
-							entry.Name.EndsWith(".raw", StringComparison.InvariantCultureIgnoreCase) ||
 							entry.Name.EndsWith(".ini", StringComparison.InvariantCultureIgnoreCase) ||
 							entry.Name.EndsWith(".socpak", StringComparison.InvariantCultureIgnoreCase))
 						{
-							var target = new FileInfo(entry.Name);
+							string fileName;
+							if (entry.Name.EndsWith(".dcb", StringComparison.InvariantCultureIgnoreCase))
+							{
+								fileName = Path.Combine(dataFileDirectory, "dcb", entry.Name);
+							}
+							else
+							{
+								fileName = Path.Combine(dataFileDirectory, "non-dcb", entry.Name);
+							}
+
+							var target = new FileInfo(fileName);
 
 							if (!target.Directory.Exists) target.Directory.Create();
 
@@ -55,7 +65,7 @@ namespace unp4k
 								{
 									byte[] buf = new byte[4096];
 
-									using (FileStream fs = File.Create(entry.Name))
+									using (FileStream fs = File.Create(fileName))
 									{
 										StreamUtils.Copy(s, fs, buf);
 									}
