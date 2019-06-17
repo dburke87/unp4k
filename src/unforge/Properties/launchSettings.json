@@ -1,8 +1,7 @@
 {
-	"profiles": {
-		"unforge": {
-			"commandName": "Project",
-			"commandLineArgs": "S:\\Projects\\unp4k\\.data\\game.dcb"
-		}
-	}
+  "profiles": {
+    "unforge": {
+      "commandName": "Project"
+    }
+  }
 }

@@ -13,7 +13,7 @@ namespace unforge
         {
             if (args.Length == 0)
 			{
-				args = new String[] { @"Z:\3.5.1 LIVE.1835013\Data" };
+				args = new String[] { @"Z:\3.5.1 LIVE.1835013\non-dcb\Data" };
 				//args = new String[] { "game.v4.dcb" };
                 // args = new String[] { "wrld.xml" };
                 // args = new String[] { "Data" };
