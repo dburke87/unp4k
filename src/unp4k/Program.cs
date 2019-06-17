@@ -22,6 +22,10 @@ namespace unp4k
 
 			if (args.Length == 1) args = new[] { args[0], "*.*" };
 
+			// TODO: The only file that has overlap between the two is the tagdatabase file, where the non-dcb is authoratative and dcb version should defer; could split out the extract, then combine both folders except for that tagdatabase file
+			if (args.Length == 2) args = new[] { args[0], args[1], "false" };
+			bool splitDcb = Convert.ToBoolean(args[2]);
+
 			using (var pakFile = File.OpenRead(args[0]))
 			{
 				var pak = new ZipFile(pakFile) { Key = new Byte[] { 0x5E, 0x7A, 0x20, 0x02, 0x30, 0x2E, 0xEB, 0x1A, 0x3B, 0xB6, 0x17, 0xC3, 0x0F, 0xDE, 0x1E, 0x47 } };
@@ -44,13 +48,20 @@ namespace unp4k
 							entry.Name.EndsWith(".socpak", StringComparison.InvariantCultureIgnoreCase))
 						{
 							string fileName;
-							if (entry.Name.EndsWith(".dcb", StringComparison.InvariantCultureIgnoreCase))
+							if (splitDcb)
 							{
-								fileName = Path.Combine(dataFileDirectory, "dcb", entry.Name);
-							}
+								if (entry.Name.EndsWith(".dcb", StringComparison.InvariantCultureIgnoreCase))
+								{
+									fileName = Path.Combine(dataFileDirectory, "dcb", entry.Name);
+								}
+								else
+								{
+									fileName = Path.Combine(dataFileDirectory, "non-dcb", entry.Name);
+								}
+							}							
 							else
 							{
-								fileName = Path.Combine(dataFileDirectory, "non-dcb", entry.Name);
+								fileName = Path.Combine(dataFileDirectory, entry.Name);
 							}
 
 							var target = new FileInfo(fileName);
