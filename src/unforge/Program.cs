@@ -12,8 +12,9 @@ namespace unforge
 		static void Main(params String[] args)
         {
             if (args.Length == 0)
-            {
-                args = new String[] { "game.v4.dcb" };
+			{
+				args = new String[] { @"Z:\3.5.1 LIVE.1835013\Data" };
+				//args = new String[] { "game.v4.dcb" };
                 // args = new String[] { "wrld.xml" };
                 // args = new String[] { "Data" };
                 // args = new String[] { @"S:\Mods\BuildXPLOR\archive-3.0\661655\Data\game.dcb" };

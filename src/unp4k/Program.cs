@@ -17,7 +17,7 @@ namespace unp4k
 	{
 		static void Main(string[] args)
 		{
-			if (args.Length == 0) args = new[] { @"Data.p4k" };
+			if (args.Length == 0) args = new[] { @"F:\Dropbox (Personal)\Games\StarCitizen\Game Extracts\3.5.1 LIVE.1835013\Data.p4k" };
 
 			if (args.Length == 1) args = new[] { args[0], "*.*" };
 
@@ -33,10 +33,15 @@ namespace unp4k
 
 						if (args[1].StartsWith("*.")) args[1] = args[1].Substring(1);                                                                                           // Enable *.ext format for extensions
 
-						if (args[1] == ".*" ||                                                                                                                                 // Searching for everything
-							args[1] == "*" ||                                                                                                                                   // Searching for everything
-							entry.Name.ToLowerInvariant().Contains(args[1].ToLowerInvariant()) ||                                                                               // Searching for keywords / extensions
-							(args[1].EndsWith("xml", StringComparison.InvariantCultureIgnoreCase) && entry.Name.EndsWith(".dcb", StringComparison.InvariantCultureIgnoreCase))) // Searching for XMLs - include game.dcb
+						//if (args[1] == ".*" ||                                                                                                                                 // Searching for everything
+						//	args[1] == "*" ||                                                                                                                                   // Searching for everything
+						//	entry.Name.ToLowerInvariant().Contains(args[1].ToLowerInvariant()) ||                                                                               // Searching for keywords / extensions
+						//	(args[1].EndsWith("xml", StringComparison.InvariantCultureIgnoreCase) && entry.Name.EndsWith(".dcb", StringComparison.InvariantCultureIgnoreCase))) // Searching for XMLs - include game.dcb
+						if (entry.Name.EndsWith(".dcb", StringComparison.InvariantCultureIgnoreCase) ||
+							entry.Name.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase) ||
+							entry.Name.EndsWith(".raw", StringComparison.InvariantCultureIgnoreCase) ||
+							entry.Name.EndsWith(".ini", StringComparison.InvariantCultureIgnoreCase) ||
+							entry.Name.EndsWith(".socpak", StringComparison.InvariantCultureIgnoreCase))
 						{
 							var target = new FileInfo(entry.Name);
 
