@@ -23,8 +23,12 @@ namespace unp4k
 			if (args.Length == 1) args = new[] { args[0], "*.*" };
 
 			// TODO: The only file that has overlap between the two is the tagdatabase file, where the non-dcb is authoratative and dcb version should defer; could split out the extract, then combine both folders except for that tagdatabase file
-			if (args.Length == 2) args = new[] { args[0], args[1], "false" };
+			if (args.Length == 2) args = new[] { args[0], args[1], "true" };
 			bool splitDcb = Convert.ToBoolean(args[2]);
+
+			if (args.Length == 3) args = new[] { args[0], args[1], args[2], @"F:\Extracts"/*string.Empty*/ };
+			if (!string.IsNullOrEmpty(args[3]))
+				dataFileDirectory = args[3];
 
 			using (var pakFile = File.OpenRead(args[0]))
 			{
