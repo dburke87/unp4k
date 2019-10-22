@@ -13,24 +13,25 @@ using System.Net.Http;
 
 namespace unp4k
 {
-	class Program
+	public class Program
 	{
 		static void Main(string[] args)
 		{
-			if (args.Length == 0) args = new[] { @"Z:\3.5.1 LIVE.1835013\Data.p4k" };
-			string dataFileDirectory = args[0].Substring(0, args[0].IndexOf("Data.p4k", StringComparison.InvariantCultureIgnoreCase));
-
+			if (args.Length == 0) args = new[] { @"Z:\3.5.0 LIVE.1473310\Data.p4k" };
 			if (args.Length == 1) args = new[] { args[0], "*.*" };
-
-			// TODO: The only file that has overlap between the two is the tagdatabase file, where the non-dcb is authoratative and dcb version should defer; could split out the extract, then combine both folders except for that tagdatabase file
 			if (args.Length == 2) args = new[] { args[0], args[1], "true" };
-			bool splitDcb = Convert.ToBoolean(args[2]);
+			if (args.Length == 3) args = new[] { args[0], args[1], args[2], @"Y:\star-citizen-data" };
 
-			if (args.Length == 3) args = new[] { args[0], args[1], args[2], @"F:\Extracts"/*string.Empty*/ };
-			if (!string.IsNullOrEmpty(args[3]))
-				dataFileDirectory = args[3];
+			Unpack(args[0], args[1], Convert.ToBoolean(args[2]), args[3]);
+		}
 
-			using (var pakFile = File.OpenRead(args[0]))
+		public static void Unpack(string dataFilePath, string search, bool splitDcb, string destinationPath)
+		{
+			string dataFileDirectory = dataFilePath.Substring(0, dataFilePath.IndexOf("Data.p4k", StringComparison.InvariantCultureIgnoreCase));
+			if (!string.IsNullOrEmpty(destinationPath))
+				dataFileDirectory = destinationPath;
+
+			using (var pakFile = File.OpenRead(dataFilePath))
 			{
 				var pak = new ZipFile(pakFile) { Key = new Byte[] { 0x5E, 0x7A, 0x20, 0x02, 0x30, 0x2E, 0xEB, 0x1A, 0x3B, 0xB6, 0x17, 0xC3, 0x0F, 0xDE, 0x1E, 0x47 } };
 
@@ -40,12 +41,12 @@ namespace unp4k
 					{
 						var crypto = entry.IsAesCrypted ? "Crypt" : "Plain";
 
-						if (args[1].StartsWith("*.")) args[1] = args[1].Substring(1);                                                                                           // Enable *.ext format for extensions
+						if (search.StartsWith("*.")) search = search.Substring(1);                                                                                           // Enable *.ext format for extensions
 
-						//if (args[1] == ".*" ||                                                                                                                                 // Searching for everything
-						//	args[1] == "*" ||                                                                                                                                   // Searching for everything
-						//	entry.Name.ToLowerInvariant().Contains(args[1].ToLowerInvariant()) ||                                                                               // Searching for keywords / extensions
-						//	(args[1].EndsWith("xml", StringComparison.InvariantCultureIgnoreCase) && entry.Name.EndsWith(".dcb", StringComparison.InvariantCultureIgnoreCase))) // Searching for XMLs - include game.dcb
+						//if (search == ".*" ||                                                                                                                                 // Searching for everything
+						//	search == "*" ||                                                                                                                                   // Searching for everything
+						//	entry.Name.ToLowerInvariant().Contains(search.ToLowerInvariant()) ||                                                                               // Searching for keywords / extensions
+						//	(search.EndsWith("xml", StringComparison.InvariantCultureIgnoreCase) && entry.Name.EndsWith(".dcb", StringComparison.InvariantCultureIgnoreCase))) // Searching for XMLs - include game.dcb
 						if (entry.Name.EndsWith(".dcb", StringComparison.InvariantCultureIgnoreCase) ||
 							entry.Name.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase) ||
 							entry.Name.EndsWith(".ini", StringComparison.InvariantCultureIgnoreCase) ||
@@ -62,7 +63,7 @@ namespace unp4k
 								{
 									fileName = Path.Combine(dataFileDirectory, "non-dcb", entry.Name);
 								}
-							}							
+							}
 							else
 							{
 								fileName = Path.Combine(dataFileDirectory, entry.Name);

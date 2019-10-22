@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace unforge
 {
-    class Program
-    {
+    public class Program
+	{
 		static void Main(params String[] args)
-        {
-            if (args.Length == 0)
+		{
+			if (args.Length == 0)
 			{
-				args = new String[] { @"Z:\3.5.1 LIVE.1835013\non-dcb\Data" };
+				args = new String[] { @"Y:\star-citizen-data\non-dcb\Data" };
 				//args = new String[] { "game.v4.dcb" };
-                // args = new String[] { "wrld.xml" };
-                // args = new String[] { "Data" };
-                // args = new String[] { @"S:\Mods\BuildXPLOR\archive-3.0\661655\Data\game.dcb" };
-            }
+				// args = new String[] { "wrld.xml" };
+				// args = new String[] { "Data" };
+				// args = new String[] { @"S:\Mods\BuildXPLOR\archive-3.0\661655\Data\game.dcb" };
+			}
 
 			if (args.Length < 1 || args.Length > 1)
 			{
@@ -35,26 +35,31 @@ namespace unforge
 				return;
 			}
 
-			if ((args.Length > 0) && Directory.Exists(args[0]))
-            {
-                foreach (var file in Directory.GetFiles(args[0], "*.*", SearchOption.AllDirectories))
-                {
-                    if (new String[] { "ini", "txt" }.Contains(Path.GetExtension(file), StringComparer.InvariantCultureIgnoreCase)) continue;
+			Unforge(args[0]);
+		}
 
-                    try
-                    {
-                        Console.WriteLine("Converting {0}", file.Replace(args[0], ""));
+		public static void Unforge(string directory)
+		{
+			if (Directory.Exists(directory))
+			{
+				foreach (var file in Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories))
+				{
+					if (new String[] { "ini", "txt" }.Contains(Path.GetExtension(file), StringComparer.InvariantCultureIgnoreCase)) continue;
 
-                        Smelter.Instance.Smelt(file);
-                    }
-                    catch (Exception) { }
-                }
-            }
-            else
-            {
-                Smelter.Instance.Smelt(args[0]);
-            }
-        }
+					try
+					{
+						Console.WriteLine("Converting {0}", file.Replace(directory, ""));
+
+						Smelter.Instance.Smelt(file);
+					}
+					catch (Exception) { }
+				}
+			}
+			else
+			{
+				Smelter.Instance.Smelt(directory);
+			}
+		}
     }
 
 	public class Smelter
