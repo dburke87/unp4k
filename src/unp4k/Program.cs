@@ -17,7 +17,7 @@ namespace unp4k
 	{
 		static void Main(string[] args)
 		{
-			if (args.Length == 0) args = new[] { @"Z:\3.5.0 LIVE.1473310\Data.p4k" };
+			if (args.Length == 0) args = new[] { @"Z:\3.7.0 LIVE.3180042\Data.p4k" };
 			if (args.Length == 1) args = new[] { args[0], "*.*" };
 			if (args.Length == 2) args = new[] { args[0], args[1], "true" };
 			if (args.Length == 3) args = new[] { args[0], args[1], args[2], @"Y:\star-citizen-data" };
