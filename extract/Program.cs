@@ -14,7 +14,7 @@ namespace extract
 	{
 		static void Main(string[] args)
 		{
-			if (args.Length == 0) args = new[] { @"Z:\3.7.0 LIVE.3180042\Data.p4k" };
+			if (args.Length == 0) args = new[] { @"Z:\Data.p4k" };
 			if (args.Length == 1) args = new[] { args[0], @"Y:\star-citizen-data" };
 
 			Extract(args[0], args[1]);
